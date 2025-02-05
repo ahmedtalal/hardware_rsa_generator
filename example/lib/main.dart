@@ -16,46 +16,69 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  String _plublicKey = 'Unknown';
+  String _signature = 'Unknown';
   final _hardwareRsaGeneratorPlugin = HardwareRsaGenerator();
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    generateRsaKeys();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
+  Future<void> generateRsaKeys() async {
+    String plublicKey;
+    String signature;
+    // generate rsa key pairs
     try {
-      platformVersion =
-          await _hardwareRsaGeneratorPlugin.getPlatformVersion() ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+      final keyPairStatus = await _hardwareRsaGeneratorPlugin.generateKeyPair();
+      debugPrint("the key pair status is $keyPairStatus");
+    } on PlatformException catch (e) {
+      throw 'Failed to generate key pair: ${e.message}';
     }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
+    // get public key
+    try {
+      plublicKey = await _hardwareRsaGeneratorPlugin.getPublicKey() ??
+          "failed to get public key";
+    } on PlatformException catch (e) {
+      throw 'Failed to get public key: ${e.message}';
+    }
+
+    // generate signature
+    try {
+      final data = Uint8List.fromList('Hello, World!'.codeUnits);
+      signature = await _hardwareRsaGeneratorPlugin.signData(data) ??
+          "Failed to sign data";
+    } on PlatformException catch (e) {
+      throw 'Failed to sign data: ${e.message}';
+    }
     if (!mounted) return;
 
     setState(() {
-      _platformVersion = platformVersion;
+      _plublicKey = plublicKey;
+      _signature = signature;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('Hardware rsa generator app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('public key is: $_plublicKey\n'),
+              Text('signature is: $_signature\n'),
+            ],
+          ),
         ),
       ),
     );

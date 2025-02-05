@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hardware_rsa_generator/hardware_rsa_generator.dart';
 import 'package:hardware_rsa_generator/hardware_rsa_generator_platform_interface.dart';
@@ -7,23 +8,52 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 class MockHardwareRsaGeneratorPlatform
     with MockPlatformInterfaceMixin
     implements HardwareRsaGeneratorPlatform {
+  @override
+  Future<String?> generateKeyPair() =>
+      Future.value('generate key pair successfully');
 
   @override
-  Future<String?> getPlatformVersion() => Future.value('42');
+  Future<String?> getPublicKey() =>
+      Future.value('generate key pair successfully');
+  @override
+  Future<String?> signData(Uint8List data) =>
+      Future.value('generate key pair successfully');
 }
 
 void main() {
-  final HardwareRsaGeneratorPlatform initialPlatform = HardwareRsaGeneratorPlatform.instance;
+  final HardwareRsaGeneratorPlatform initialPlatform =
+      HardwareRsaGeneratorPlatform.instance;
 
   test('$MethodChannelHardwareRsaGenerator is the default instance', () {
     expect(initialPlatform, isInstanceOf<MethodChannelHardwareRsaGenerator>());
   });
 
-  test('getPlatformVersion', () async {
+  test('generateKeyPair', () async {
     HardwareRsaGenerator hardwareRsaGeneratorPlugin = HardwareRsaGenerator();
-    MockHardwareRsaGeneratorPlatform fakePlatform = MockHardwareRsaGeneratorPlatform();
+    MockHardwareRsaGeneratorPlatform fakePlatform =
+        MockHardwareRsaGeneratorPlatform();
     HardwareRsaGeneratorPlatform.instance = fakePlatform;
 
-    expect(await hardwareRsaGeneratorPlugin.getPlatformVersion(), '42');
+    expect(await hardwareRsaGeneratorPlugin.generateKeyPair(),
+        'generate key pair successfully');
+  });
+
+  test('getPublicKey', () async {
+    HardwareRsaGenerator hardwareRsaGeneratorPlugin = HardwareRsaGenerator();
+    MockHardwareRsaGeneratorPlatform fakePlatform =
+        MockHardwareRsaGeneratorPlatform();
+    HardwareRsaGeneratorPlatform.instance = fakePlatform;
+    final String? publicKey = await hardwareRsaGeneratorPlugin.getPublicKey();
+    expect(publicKey?.isNotEmpty, true);
+  });
+
+  test('signData', () async {
+    HardwareRsaGenerator hardwareRsaGeneratorPlugin = HardwareRsaGenerator();
+    MockHardwareRsaGeneratorPlatform fakePlatform =
+        MockHardwareRsaGeneratorPlatform();
+    HardwareRsaGeneratorPlatform.instance = fakePlatform;
+    final data = Uint8List.fromList('Hello, World!'.codeUnits);
+    final String? signature = await hardwareRsaGeneratorPlugin.signData(data);
+    expect(signature?.isNotEmpty, true);
   });
 }

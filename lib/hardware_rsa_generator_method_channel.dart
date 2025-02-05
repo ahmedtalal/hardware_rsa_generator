@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -10,8 +12,22 @@ class MethodChannelHardwareRsaGenerator extends HardwareRsaGeneratorPlatform {
   final methodChannel = const MethodChannel('hardware_rsa_generator');
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
-    return version;
+  Future<String?> generateKeyPair() async {
+    final keyStatus =
+        await methodChannel.invokeMethod<String>('generateKeyPair');
+    return keyStatus;
+  }
+
+  @override
+  Future<String?> getPublicKey() async {
+    final publicKey = await methodChannel.invokeMethod<String>('getPublicKey');
+    return publicKey;
+  }
+
+  @override
+  Future<String?> signData(Uint8List data) async {
+    final signature =
+        await methodChannel.invokeMethod('signData', {'data': data});
+    return base64.encode(signature!);
   }
 }

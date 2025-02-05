@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'hardware_rsa_generator_method_channel.dart';
@@ -8,7 +9,8 @@ abstract class HardwareRsaGeneratorPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static HardwareRsaGeneratorPlatform _instance = MethodChannelHardwareRsaGenerator();
+  static HardwareRsaGeneratorPlatform _instance =
+      MethodChannelHardwareRsaGenerator();
 
   /// The default instance of [HardwareRsaGeneratorPlatform] to use.
   ///
@@ -23,7 +25,15 @@ abstract class HardwareRsaGeneratorPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+  Future<String?> generateKeyPair() {
+    throw UnimplementedError('generateKeyPair() has not been implemented.');
+  }
+
+  Future<String?> getPublicKey() {
+    throw UnimplementedError('getPublicKey() has not been implemented.');
+  }
+
+  Future<String?> signData(Uint8List data) {
+    throw UnimplementedError('signData() has not been implemented.');
   }
 }
