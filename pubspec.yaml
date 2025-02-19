@@ -1,6 +1,6 @@
 name: hardware_rsa_generator
 description: "Flutter plugin that allows you to generate, store, and use RSA key pairs directly within the secure hardware-backed Keystore (Android) and Secure Enclave (iOS)."
-version: 1.0.0
+version: 1.0.1
 repository: https://github.com/ahmedtalal/hardware_rsa_generator
 
 environment:

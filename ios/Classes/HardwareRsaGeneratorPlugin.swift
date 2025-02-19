@@ -14,12 +14,20 @@ public class HardwareRsaGeneratorPlugin: NSObject, FlutterPlugin {
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
             case "generateKeyPair":
-                let success = self.generateKeyPair()
-                if success==true {
-                 result("generate key pair successfully")
-                }else {
-                  result("generate key pair failed")
-                }
+            do{
+               let success = self.generateKeyPair()
+               DispatchQueue.main.async {
+                   if success==true {
+                    result("generate key pair successfully")
+                     }else {
+                     result("generate key pair failed")
+                    }
+               }
+            }catch{
+             DispatchQueue.main.async {
+                        result(FlutterError(code: "ERROR", message: error.localizedDescription, details: nil))
+                    }
+            }
             case "getPublicKey":
                 result(self.getPublicKey())
             case "signData":

@@ -17,6 +17,8 @@ import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.Signature
 import android.util.Base64
+import kotlinx.coroutines.*
+
 
 
 /** HardwareRsaGeneratorPlugin */
@@ -36,11 +38,15 @@ class HardwareRsaGeneratorPlugin: FlutterPlugin, MethodCallHandler {
   override fun onMethodCall(call: MethodCall, result: Result) {
     when (call.method) {
         "generateKeyPair" -> {
-          try {
-            generateKeyPair()
-            result.success("generate key pair successfully")
-          }catch (e:Exception){
-            result.error("GENERATE_KEY_PAIRS_ERROR", e.message, null)
+          GlobalScope.launch(Dispatchers.IO) { // Run in background thread
+            try {
+              generateKeyPair()
+              withContext(Dispatchers.Main){ // Send result back to Flutter
+                result.success("generate key pair successfully")
+              }
+            }catch (e:Exception){
+              result.error("GENERATE_KEY_PAIRS_ERROR", e.message, null)
+            }
           }
         }
         "getPublicKey" -> {
