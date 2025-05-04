@@ -25,7 +25,8 @@ void main() {
   });
 
   test('generateKeyPair', () async {
-    expect(await platform.generateKeyPair(), 'generate key pair successfully');
+    expect(await platform.generateKeyPairStatus(),
+        'generate key pair successfully');
   });
 
   test('getPublicKey', () async {

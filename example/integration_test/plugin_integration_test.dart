@@ -17,7 +17,7 @@ void main() {
 
   testWidgets('generateKeyPair test', (WidgetTester tester) async {
     final HardwareRsaGenerator plugin = HardwareRsaGenerator();
-    final String? keyStatus = await plugin.generateKeyPair();
+    final String? keyStatus = await plugin.generateKeyPairStatus();
     expect(keyStatus?.isNotEmpty, true);
   });
 

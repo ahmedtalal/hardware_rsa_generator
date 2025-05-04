@@ -25,7 +25,7 @@ abstract class HardwareRsaGeneratorPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> generateKeyPair() {
+  Future<String?> generateKeyPairStatus() {
     throw UnimplementedError('generateKeyPair() has not been implemented.');
   }
 

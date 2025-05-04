@@ -4,8 +4,8 @@ import 'hardware_rsa_generator_platform_interface.dart';
 
 class HardwareRsaGenerator {
   /// Generate a key pair in the secure element
-  Future<String?> generateKeyPair() {
-    return HardwareRsaGeneratorPlatform.instance.generateKeyPair();
+  Future<String?> generateKeyPairStatus() {
+    return HardwareRsaGeneratorPlatform.instance.generateKeyPairStatus();
   }
 
   /// Return the public key of the secure element

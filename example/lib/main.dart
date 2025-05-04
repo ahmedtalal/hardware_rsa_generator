@@ -32,7 +32,8 @@ class _MyAppState extends State<MyApp> {
     String signature;
     // generate rsa key pairs
     try {
-      final keyPairStatus = await _hardwareRsaGeneratorPlugin.generateKeyPair();
+      final keyPairStatus =
+          await _hardwareRsaGeneratorPlugin.generateKeyPairStatus();
       debugPrint("the key pair status is $keyPairStatus");
     } on PlatformException catch (e) {
       throw 'Failed to generate key pair: ${e.message}';

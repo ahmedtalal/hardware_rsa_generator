@@ -9,7 +9,7 @@ class MockHardwareRsaGeneratorPlatform
     with MockPlatformInterfaceMixin
     implements HardwareRsaGeneratorPlatform {
   @override
-  Future<String?> generateKeyPair() =>
+  Future<String?> generateKeyPairStatus() =>
       Future.value('generate key pair successfully');
 
   @override
@@ -34,7 +34,7 @@ void main() {
         MockHardwareRsaGeneratorPlatform();
     HardwareRsaGeneratorPlatform.instance = fakePlatform;
 
-    expect(await hardwareRsaGeneratorPlugin.generateKeyPair(),
+    expect(await hardwareRsaGeneratorPlugin.generateKeyPairStatus(),
         'generate key pair successfully');
   });
 
