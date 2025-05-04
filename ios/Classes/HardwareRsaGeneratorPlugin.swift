@@ -127,10 +127,6 @@ private func getPublicKey() -> String? {
     return nil
 }
 
-
-    import Security
-import LocalAuthentication
-
 private func signData(data: Data) -> String? {
     // Check if Secure Enclave is available on the device
     let context = LAContext()
@@ -160,24 +156,16 @@ private func signData(data: Data) -> String? {
 }
 
 private func signWithPrivateKey(attributes: [String: Any], data: Data) -> String? {
-    // Try to get the private key from Keychain or Secure Enclave
     var privateKeyRef: CFTypeRef?
     let status = SecItemCopyMatching(attributes as CFDictionary, &privateKeyRef)
-    
     if status != errSecSuccess {
         print("❌ Failed to retrieve private key: \(status)")
         return nil
     }
-    
-    guard let privateKey = privateKeyRef as? SecKey else {
-        print("❌ Failed to cast private key reference.")
-        return nil
-    }
-
-    // Define the signature algorithm (RSA-SHA256 in this case)
+ 
+    let privateKey = privateKeyRef as! SecKey  // ✅ Fixed cast
+ 
     let algorithm: SecKeyAlgorithm = .rsaSignatureMessagePKCS1v15SHA256
-    
-    // Create the signature using the private key
     var error: Unmanaged<CFError>?
     guard let signedData = SecKeyCreateSignature(privateKey, algorithm, data as CFData, &error) else {
         if let error = error {
@@ -185,8 +173,6 @@ private func signWithPrivateKey(attributes: [String: Any], data: Data) -> String
         }
         return nil
     }
-    
-    // Convert the signature to Base64 encoded string
     let signatureData = signedData as Data
     let base64Signature = signatureData.base64EncodedString()
     print("✅ Data signed successfully")

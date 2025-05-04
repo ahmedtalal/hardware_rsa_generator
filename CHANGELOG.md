@@ -13,3 +13,7 @@
 - In iOS, modified key generation to check for Secure Enclave availability and store the key there if supported.
 - Updated `signData` method to return Base64-encoded string on both platforms (Android & iOS).
 - Optimized cryptographic operations by running them on background threads.
+
+## 1.1.1
+
+- Fixed bug in ios
