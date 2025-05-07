@@ -17,3 +17,7 @@
 ## 1.1.1
 
 - Fixed bug in ios
+
+## 1.1.2
+
+- change the key size from 3072 to 2048

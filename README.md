@@ -10,5 +10,5 @@ Add the `hardware_rsa_generator` package to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  hardware_rsa_generator: ^1.1.1 # this is the latest version
+  hardware_rsa_generator: ^1.1.2 # this is the latest version
 ```
