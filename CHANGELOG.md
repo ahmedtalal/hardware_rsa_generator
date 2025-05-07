@@ -21,3 +21,7 @@
 ## 1.1.2
 
 - change the key size from 3072 to 2048
+
+## 1.1.3
+
+- use the same encode method in getPublic key and signData

@@ -148,7 +148,7 @@ class HardwareRsaGeneratorPlugin : FlutterPlugin, MethodCallHandler {
       val publicKey = it.certificate.publicKey // Extract public key from the X.509 certificate
       return Base64.encodeToString(
               publicKey.encoded,
-              Base64.DEFAULT
+              Base64.NO_WRAP // remove line breaks for Base64 encoding
       ) // Encode public key as Base64 string
     }
             ?: run {
@@ -177,7 +177,10 @@ class HardwareRsaGeneratorPlugin : FlutterPlugin, MethodCallHandler {
       signature.update(data) // Supply the data to be signed
 
       val byte = signature.sign() // Return the final signature
-      return Base64.encodeToString(byte, Base64.NO_WRAP)
+      return Base64.encodeToString(
+              byte,
+              Base64.NO_WRAP
+      ) // Encode the signature as Base64 string and remove line breaks
     } catch (e: Exception) {
       Log.e("SignData", "Error signing data: ${e.message}")
       throw e // Re-throw the exception after logging the error
